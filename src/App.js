@@ -1,24 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Data from "./components/Data";
+import { Routes, Route } from "react-router-dom";
+import Description from "./components/Description";
+import AddingValues from "./components/AddingValues";
+
+import { useState } from "react";
 
 function App() {
+  const [combinedData, setCombinedData] = useState([]);
+  console.log(combinedData);
+
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:8000/Data")
+  //     .then((res) => setCombinedData(res.combinedData))
+  //     .catch((err) => console.log(err));
+  // }, []);
+
+  // console.log(combinedData);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Data
+              combinedData={combinedData}
+              setCombinedData={setCombinedData}
+            />
+          }
+        />
+        <Route
+          path="/description/:id"
+          element={
+            <Description
+              combinedData={combinedData}
+              setCombinedData={setCombinedData}
+            />
+          }
+        />
+        <Route
+          path="/addingValues"
+          element={
+            <AddingValues
+              combinedData={combinedData}
+              setCombinedData={setCombinedData}
+            />
+          }
+        />
+      </Routes>
+    </>
   );
 }
 
