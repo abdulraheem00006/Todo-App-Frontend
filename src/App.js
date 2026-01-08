@@ -3,21 +3,27 @@ import Data from "./components/Data";
 import { Routes, Route } from "react-router-dom";
 import Description from "./components/Description";
 import AddingValues from "./components/AddingValues";
+// import data from "./Values.json"
+import axios from "axios";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [combinedData, setCombinedData] = useState([]);
-  console.log(combinedData);
 
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:8000/Data")
-  //     .then((res) => setCombinedData(res.combinedData))
-  //     .catch((err) => console.log(err));
-  // }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  // console.log(combinedData);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000");
+      console.log(response);
+      setCombinedData(response.data);
+    } catch (error) {
+      console.log("There's an error ", error);
+    }
+  };
 
   return (
     <>
