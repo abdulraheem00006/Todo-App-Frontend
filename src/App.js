@@ -6,7 +6,7 @@ import AddingValues from "./components/AddingValues";
 // import data from "./Values.json"
 import axios from "axios";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [combinedData, setCombinedData] = useState([]);
@@ -18,10 +18,18 @@ function App() {
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:4000");
-      console.log(response);
       setCombinedData(response.data);
     } catch (error) {
       console.log("There's an error ", error);
+    }
+  };
+
+  const handleDelete = async (deleteVal) => {
+    try {
+      await axios.delete(`http://localhost:4000/delete/${deleteVal}`);
+      await fetchData();
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -34,6 +42,7 @@ function App() {
             <Data
               combinedData={combinedData}
               setCombinedData={setCombinedData}
+              handleDelete={handleDelete}
             />
           }
         />
