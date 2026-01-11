@@ -1,25 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 // import { useEffect } from "react";
 // import AddingValues from "./AddingValues";
-import axios from "axios";
+// import axios from "axios";
 
-export default function Data({ combinedData, setCombinedData }) {
+export default function Data({ combinedData, handleDelete }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate("/addingValues");
-  };
-
-  const handleDelete = async (deleteVal) => {
-    try {
-      const resp = await axios.delete(
-        `http://localhost:4000/delete/${deleteVal}`
-      );
-      console.log(resp.data);
-      setCombinedData(resp.data);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (
