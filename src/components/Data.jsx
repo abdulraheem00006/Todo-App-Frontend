@@ -1,22 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
-
+// import { useEffect } from "react";
 // import AddingValues from "./AddingValues";
+import axios from "axios";
 
 export default function Data({ combinedData, setCombinedData }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    // when clicked opens a new page
-
     navigate("/addingValues");
   };
 
-  const handleDelete = (deleteVal) => {
-    //combined data has the values of both title and description, i have to
-    // set that to the setter function here and delete it when clicked
-    // can I directly set it to the null then the
-    const delTask = combinedData.data.filter((item) => item !== deleteVal);
-    setCombinedData(delTask);
+  const handleDelete = async (deleteVal) => {
+    try {
+      const resp = await axios.delete(
+        `http://localhost:4000/delete/${deleteVal}`
+      );
+      console.log(resp.data);
+      setCombinedData(resp.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -24,7 +27,7 @@ export default function Data({ combinedData, setCombinedData }) {
       {combinedData.map((val, index) => (
         <div key={index}>
           <Link to={`/description/${val.id}`}>{val.title}</Link>
-          <button onClick={() => handleDelete(val)}>Delete</button>
+          <button onClick={() => handleDelete(val.id)}>Delete</button>
         </div>
       ))}
 
