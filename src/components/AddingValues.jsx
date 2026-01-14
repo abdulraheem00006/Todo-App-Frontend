@@ -1,38 +1,38 @@
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-function AddingValues({ combinedData }) {
+function AddingValues({ combinedData, fetchData }) {
   const navigate = useNavigate();
   const [descriptionVal, setDescriptionVal] = useState("");
   const [titleVal, setTitleVal] = useState("");
 
-  // create states which can hold the value of title and description and they are string
-  // and lets then push those two states values into a single array.
-
   const handleDescriptionChange = (e) => {
     setDescriptionVal(e.target.value);
-    // Values.push(setDescriptionVal);
-    // I want to push the values of setDescriptionVal into Values json file
   };
 
   const handleTitleChange = (e) => {
     setTitleVal(e.target.value);
   };
 
-  const handleCombinedChange = (e) => {
+  const handleCombinedChange = async (e) => {
     e.preventDefault();
-    const obj = {
-      id: Date.now(),
-      title: titleVal,
-      description: descriptionVal,
-    };
 
-    combinedData.push(obj);
+    try {
+      const resp = await axios.post("http://localhost:4000/add", {
+        id: Date.now(),
+        title: titleVal,
+        description: descriptionVal,
+      });
 
-    setTitleVal("");
-    setDescriptionVal("");
-    navigate("/");
+      combinedData.push(resp);
+      setTitleVal("");
+      setDescriptionVal("");
+      await fetchData();
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -52,9 +52,6 @@ function AddingValues({ combinedData }) {
       </label>
       <br />
       <button type="submit">Submit</button>
-
-      {/* combined data now has the array of object with id and title that i have to send it to the 
- data.jsx file and display the title and description from there  */}
     </form>
   );
 }

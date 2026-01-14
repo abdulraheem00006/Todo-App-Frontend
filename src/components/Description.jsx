@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export default function Description({ combinedData, setCombinedData }) {
+export default function Description({
+  combinedData,
+  setCombinedData,
+  fetchData,
+}) {
   const { id } = useParams();
   const navigate = useNavigate();
   let result = combinedData.find((value) => value.id === parseInt(id));
@@ -12,25 +17,22 @@ export default function Description({ combinedData, setCombinedData }) {
   const [showInput, setShowInput] = useState(false);
   const [showData, setShowData] = useState(true);
 
-  // console.log(result);
-
   const handleDescriptionChange = (e) => {
     setDescriptionVal(e.target.value);
-    // Values.push(setDescriptionVal);
-    // I want to push the values of setDescriptionVal into Values json file
   };
 
   const handleTitleChange = (e) => {
     setTitleVal(e.target.value);
   };
 
-  const handleCombinedChange = (e) => {
+  const handleCombinedChange = async (e) => {
     e.preventDefault();
-    // const obj = {
-    //   id: Date.now(),
+
+    // const resp = await axios.put(`http://localhost:4000/put/${Number(id)}`, {
     //   title: titleVal,
     //   description: descriptionVal,
-    // };
+    // });
+
     const updatedObj = combinedData.map((obj) => {
       if (obj.id === parseInt(id)) {
         return {
@@ -41,38 +43,14 @@ export default function Description({ combinedData, setCombinedData }) {
       } else {
         return obj;
       }
-
-      // return [...obj, titleVal, descriptionVal];
-      // if (obj.id === parseInt.id) {
-      //   return {
-      //     id: obj.id,
-      //     title: titleVal,
-      //     description: descriptionVal,
-      //   };
-      // } else {
-      //   return {
-      //     id: obj.id,
-      //     title: titleVal,
-      //     description: descriptionVal,
-      //   };
-      // }
     });
-
     setCombinedData(updatedObj);
     navigate("/");
   };
-  // console.log(combinedData);
+
   const handleEdit = () => {
     setShowInput(!showInput);
     setShowData(!showData);
-
-    //when combinedData is equal to
-    // combinedData.filter((item) => {
-    //   // editVal === item ? item : titleVal;
-    //   return item === editVal ? setCombinedData(setTitleVal) : item;
-    // combinedData.filter((item) => {
-    //   return item !== val ? setCombinedData(setTitleVal) : item;
-    // });
   };
 
   return (
