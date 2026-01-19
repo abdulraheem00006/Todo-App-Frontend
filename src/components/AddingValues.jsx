@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function AddingValues({ combinedData, fetchData }) {
+function AddingValues({ fetchData, setCombinedData }) {
   const navigate = useNavigate();
   const [descriptionVal, setDescriptionVal] = useState("");
   const [titleVal, setTitleVal] = useState("");
@@ -25,7 +25,7 @@ function AddingValues({ combinedData, fetchData }) {
         description: descriptionVal,
       });
 
-      combinedData.push(resp);
+      setCombinedData(resp);
       setTitleVal("");
       setDescriptionVal("");
       await fetchData();
