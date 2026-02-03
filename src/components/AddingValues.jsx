@@ -20,11 +20,9 @@ function AddingValues({ fetchData, setCombinedData }) {
 
     try {
       const resp = await axios.post("http://localhost:4000/add", {
-        id: Date.now(),
         title: titleVal,
         description: descriptionVal,
       });
-
       setCombinedData(resp);
       setTitleVal("");
       setDescriptionVal("");
