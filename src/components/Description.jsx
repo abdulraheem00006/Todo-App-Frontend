@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Button from "@mui/material/Button";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import TaskIcon from "@mui/icons-material/Task";
+import Typography from "@mui/material/Typography";
 
 export default function Description({ combinedData, fetchData }) {
   const { id } = useParams();
@@ -9,7 +14,7 @@ export default function Description({ combinedData, fetchData }) {
 
   const [titleVal, setTitleVal] = useState(result?.title || "");
   const [descriptionVal, setDescriptionVal] = useState(
-    result?.description || ""
+    result?.description || "",
   );
 
   const [showInput, setShowInput] = useState(false);
@@ -49,17 +54,65 @@ export default function Description({ combinedData, fetchData }) {
     <div>
       {showData && (
         <div>
+          <AppBar position="static">
+            <Toolbar>
+              <TaskIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                  fontFamily: "monospace",
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                {" "}
+                TODO
+              </Typography>
+            </Toolbar>
+          </AppBar>
           <h3>{result.title}</h3>
           <p>{result.description}</p>
-          <button onClick={handleEdit}>Edit</button>
+          <Button variant="contained" onClick={handleEdit}>
+            Edit
+          </Button>
         </div>
       )}
 
       {showInput && (
         <form onSubmit={handleCombinedChange}>
+          <AppBar position="static">
+            <Toolbar>
+              <TaskIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                  fontFamily: "monospace",
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                {" "}
+                TODO
+              </Typography>
+            </Toolbar>
+          </AppBar>
           <label>
             Add Title:
-            <input type="text" value={titleVal} onChange={handleTitleChange} />
+            <input
+              type="text"
+              value={titleVal}
+              onChange={handleTitleChange}
+            />
           </label>
           <br />
           <label>
@@ -71,7 +124,7 @@ export default function Description({ combinedData, fetchData }) {
             />
           </label>
           <br />
-          <button>Submit</button>
+          <Button variant="contained">Submit</Button>
         </form>
       )}
     </div>

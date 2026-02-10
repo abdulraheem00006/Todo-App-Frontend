@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Button from "@mui/material/Button";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import TaskIcon from "@mui/icons-material/Task";
+import Typography from "@mui/material/Typography";
 
 function AddingValues({ fetchData, setCombinedData }) {
   const navigate = useNavigate();
@@ -35,6 +40,27 @@ function AddingValues({ fetchData, setCombinedData }) {
 
   return (
     <form onSubmit={handleCombinedChange}>
+      <AppBar position="static">
+        <Toolbar>
+          <TaskIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            {" "}
+            TODO
+          </Typography>
+        </Toolbar>
+      </AppBar>
       <label>
         Add Title:
         <input type="text" onChange={handleTitleChange} value={titleVal} />
@@ -49,7 +75,9 @@ function AddingValues({ fetchData, setCombinedData }) {
         />
       </label>
       <br />
-      <button type="submit">Submit</button>
+      <Button variant="contained" type="submit">
+        Submit
+      </Button>
     </form>
   );
 }
