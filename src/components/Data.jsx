@@ -11,11 +11,24 @@ import Typography from "@mui/material/Typography";
 // import AddingValues from "./AddingValues";
 // import axios from "axios";
 
-export default function Data({ combinedData, handleDelete }) {
+export default function Data({
+  combinedData,
+  handleDelete,
+  isLoggedIn,
+  handleLogout,
+}) {
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate("/addingValues");
+  };
+
+  const handleClickSignUp = () => {
+    navigate("/signup");
+  };
+
+  const handleClickSignIn = () => {
+    navigate("/signin");
   };
 
   return (
@@ -41,27 +54,47 @@ export default function Data({ combinedData, handleDelete }) {
           </Typography>
         </Toolbar>
       </AppBar>
-      {combinedData.map((val, index) => (
-        <Card
-          variant="outlined"
-          key={index}
-          sx={{ display: "flex", alignItems: "center", gap: 2, mb: 1 }}
-        >
-          <Link to={`/description/${val.id}`}>{val.title}</Link>
-          <Button
-            variant="outlined"
-            color="error"
-            startIcon={<DeleteIcon />}
-            onClick={() => handleDelete(val.id)}
-          >
-            Delete
-          </Button>
-        </Card>
-      ))}
 
-      <Button variant="contained" onClick={handleClick}>
-        Add button
-      </Button>
+      {isLoggedIn &&
+        combinedData.map((val, index) => (
+          <Card
+            variant="outlined"
+            key={index}
+            sx={{ display: "flex", alignItems: "center", gap: 2, mb: 1 }}
+          >
+            <Link to={`/description/${val.id}`}>{val.title}</Link>
+            <Button
+              variant="outlined"
+              color="error"
+              startIcon={<DeleteIcon />}
+              onClick={() => handleDelete(val.id)}
+            >
+              Delete
+            </Button>
+          </Card>
+        ))}
+
+      {isLoggedIn && (
+        <Button variant="contained" onClick={handleClick}>
+          Add button
+        </Button>
+      )}
+      <br />
+      {isLoggedIn ? (
+        <Button variant="contained" color="error" onClick={handleLogout}>
+          Logout
+        </Button>
+      ) : (
+        <>
+          <Button variant="outlined" onClick={handleClickSignUp}>
+            Sign Up
+          </Button>
+
+          <Button variant="contained" onClick={handleClickSignIn}>
+            Sign In
+          </Button>
+        </>
+      )}
     </div>
   );
 }
