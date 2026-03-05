@@ -6,8 +6,15 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import TaskIcon from "@mui/icons-material/Task";
 import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
 
-function AddingValues({ fetchData, setCombinedData }) {
+function AddingValues({
+  fetchData,
+  setCombinedData,
+  combinedData,
+  loggedInUser,
+}) {
   const navigate = useNavigate();
   const [descriptionVal, setDescriptionVal] = useState("");
   const [titleVal, setTitleVal] = useState("");
@@ -24,20 +31,19 @@ function AddingValues({ fetchData, setCombinedData }) {
     e.preventDefault();
 
     try {
-      const resp = await axios.post("http://localhost:4000/add", {
-        title: titleVal,
-        description: descriptionVal,
-      });
-      setCombinedData(resp);
+      const resp = await axios.post(
+        "http://localhost:4000/add",
+        { title: titleVal, description: descriptionVal },
+        { withCredentials: true },
+      );
+      setCombinedData([...combinedData, resp.data]);
       setTitleVal("");
       setDescriptionVal("");
-      await fetchData();
       navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
-
   return (
     <form onSubmit={handleCombinedChange}>
       <AppBar position="static">
@@ -61,19 +67,23 @@ function AddingValues({ fetchData, setCombinedData }) {
           </Typography>
         </Toolbar>
       </AppBar>
-      <label>
-        Add Title:
-        <input type="text" onChange={handleTitleChange} value={titleVal} />
-      </label>
       <br />
-      <label>
-        Add Description:
-        <input
+      <Stack>
+        <TextField
+          label="Title"
+          type="text"
+          onChange={handleTitleChange}
+          value={titleVal}
+        />
+        <br />
+        <TextField
+          label="Description"
           type="text"
           onChange={handleDescriptionChange}
           value={descriptionVal}
         />
-      </label>
+      </Stack>
+
       <br />
       <Button variant="contained" type="submit">
         Submit

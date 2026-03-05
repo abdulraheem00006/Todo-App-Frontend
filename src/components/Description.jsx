@@ -6,10 +6,13 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import TaskIcon from "@mui/icons-material/Task";
 import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
 
 export default function Description({ combinedData, fetchData }) {
   const { id } = useParams();
   const navigate = useNavigate();
+
   let result = combinedData.find((value) => value.id === parseInt(id));
 
   const [titleVal, setTitleVal] = useState(result?.title || "");
@@ -32,10 +35,16 @@ export default function Description({ combinedData, fetchData }) {
     e.preventDefault();
 
     try {
-      await axios.put(`http://localhost:4000/put/${result.id}`, {
-        title: titleVal,
-        description: descriptionVal,
-      });
+      await axios.put(
+        `http://localhost:4000/put/${result.id}`,
+        {
+          title: titleVal,
+          description: descriptionVal,
+        },
+        {
+          withCredentials: true,
+        },
+      );
 
       await fetchData();
 
@@ -106,25 +115,28 @@ export default function Description({ combinedData, fetchData }) {
               </Typography>
             </Toolbar>
           </AppBar>
-          <label>
-            Add Title:
-            <input
+          <br />
+          <Stack>
+            <TextField
+              label="Title"
               type="text"
               value={titleVal}
               onChange={handleTitleChange}
             />
-          </label>
-          <br />
-          <label>
-            Add Description:
-            <input
+            <br />
+
+            <TextField
+              label="Description"
               type="text"
               value={descriptionVal}
               onChange={handleDescriptionChange}
             />
-          </label>
+          </Stack>
+
           <br />
-          <Button variant="contained">Submit</Button>
+          <Button type="submit" variant="contained">
+            Submit
+          </Button>
         </form>
       )}
     </div>
